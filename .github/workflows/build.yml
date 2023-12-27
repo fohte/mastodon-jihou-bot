@@ -27,7 +27,7 @@ jobs:
 
       - name: build for lambda
         run: |
-          GOOS=linux GOARCH=arm64 go build -tags lambda.norpc -o bootstrap main.go
+          GOOS=linux GOARCH=arm64 go build -tags lambda.norpc -o bootstrap .
 
       - id: tag
         run: echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
