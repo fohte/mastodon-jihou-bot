@@ -1,5 +1,7 @@
 # mastodon-jihou-bot (Mastodon 時報 Bot)
 
+![](https://github.com/fohte/mastodon-jihou-bot/actions/workflows/build.yml/badge.svg)
+
 `mastodon-jihou-bot` is a Mastodon bot that posts the time every hour.
 
 ![post-sample](https://github.com/fohte/mastodon-jihou-bot/assets/11088009/af1d361e-b587-4a75-b184-2156c0b4c1c8)
