@@ -1,16 +1,22 @@
 package main
 
+//go:generate mockgen -source=$GOFILE -destination=./mock_$GOPACKAGE/mock_$GOFILE
+
 import (
 	"context"
 
 	"github.com/mattn/go-mastodon"
 )
 
+type MastodonService interface {
+	PostStatus(ctx context.Context, toot *mastodon.Toot) (*mastodon.Status, error)
+}
+
 type mastodonService struct {
 	client *mastodon.Client
 }
 
-func NewMastodonService(cfg *Config) *mastodonService {
+func NewMastodonService(cfg *Config) MastodonService {
 	client := mastodon.NewClient(&mastodon.Config{
 		Server:      SERVER_URL,
 		AccessToken: cfg.AccessToken,

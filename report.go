@@ -10,8 +10,8 @@ type TimeReport struct {
 	time     time.Time
 }
 
-func NewTimeReport(timeZone *time.Location) *TimeReport {
-	now := time.Now().In(timeZone)
+func NewTimeReport(tp TimeProvider, timeZone *time.Location) *TimeReport {
+	now := tp.Now()
 	return &TimeReport{
 		timeZone: timeZone,
 		time:     time.Date(now.Year(), now.Month(), now.Day(), now.Hour(), 0, 0, 0, timeZone),
@@ -79,7 +79,7 @@ func (tr *TimeReport) CreateTimeReport() string {
 
 	s += fmt.Sprintf("%s %s\n", tr.getClockEmoji(), tr.time.Format("15:04"))
 
-	s += fmt.Sprintf("\n📌 年末年始休暇: 残り %.0f/%.0f 日 (%d %%) [%s]\n", daysUntilEnd, totalVacationDays, remainingPercentage, progressBar)
+	s += fmt.Sprintf("\n📌 年末年始休暇: 残り %.0f/%.0f 日 (%d %%) [%s]", daysUntilEnd, totalVacationDays, remainingPercentage, progressBar)
 
 	return s
 }

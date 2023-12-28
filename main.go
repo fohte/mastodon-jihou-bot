@@ -20,13 +20,13 @@ const (
 
 type Event struct{}
 
-func Run(ctx context.Context, service *mastodonService) (*string, error) {
+func Run(ctx context.Context, service MastodonService, timeProvider TimeProvider) (*string, error) {
 	location, err := time.LoadLocation("Asia/Tokyo")
 	if err != nil {
 		return nil, err
 	}
 
-	timeReport := NewTimeReport(location)
+	timeReport := NewTimeReport(timeProvider, location)
 
 	content := timeReport.CreateTimeReport()
 
@@ -56,7 +56,7 @@ func handleRequest(ctx context.Context, event *Event) (*string, error) {
 
 	service := NewMastodonService(cfg)
 
-	return Run(ctx, service)
+	return Run(ctx, service, &RealTimeProvider{})
 }
 
 func main() {
