@@ -1,4 +1,4 @@
-name: build
+name: Release
 on:
   push:
     tags:
@@ -13,7 +13,7 @@ env:
   APP_NAME: mastodon-jihou-bot
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -51,7 +51,6 @@ jobs:
           files: |
             {{ env.APP_NAME }}.zip
           tag_name: ${{ steps.tag.outputs.version }}
-          body: |
-            ${{ steps.tag.outputs.version }}
+          generate_release_notes: true
           draft: false
           prerelease: false
