@@ -22,3 +22,5 @@ jobs:
           token: ${{ steps.app-token.outputs.token }}
 
       - uses: haya14busa/action-bumpr@v1
+        with:
+          github_token: ${{ steps.app-token.outputs.token }}
