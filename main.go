@@ -10,7 +10,7 @@ import (
 	"github.com/mattn/go-mastodon"
 )
 
-type config struct {
+type Config struct {
 	AccessToken string `env:"MASTODON_ACCESS_TOKEN"`
 }
 
@@ -20,17 +20,7 @@ const (
 
 type Event struct{}
 
-func handleRequest(ctx context.Context, event *Event) (*string, error) {
-	if event == nil {
-		return nil, fmt.Errorf("received nil event")
-	}
-
-	cfg := config{}
-	err := env.Parse(cfg)
-	if err != nil {
-		return nil, err
-	}
-
+func Run(ctx context.Context, service *mastodonService) (*string, error) {
 	location, err := time.LoadLocation("Asia/Tokyo")
 	if err != nil {
 		return nil, err
@@ -40,12 +30,7 @@ func handleRequest(ctx context.Context, event *Event) (*string, error) {
 
 	content := timeReport.CreateTimeReport()
 
-	client := mastodon.NewClient(&mastodon.Config{
-		Server:      SERVER_URL,
-		AccessToken: cfg.AccessToken,
-	})
-
-	status, err := client.PostStatus(ctx, &mastodon.Toot{
+	status, err := service.PostStatus(ctx, &mastodon.Toot{
 		Status:     content,
 		Visibility: "unlisted",
 	})
@@ -56,6 +41,22 @@ func handleRequest(ctx context.Context, event *Event) (*string, error) {
 
 	message := fmt.Sprintf("post success: %s", status.URL)
 	return &message, nil
+}
+
+func handleRequest(ctx context.Context, event *Event) (*string, error) {
+	if event == nil {
+		return nil, fmt.Errorf("received nil event")
+	}
+
+	cfg := &Config{}
+	err := env.Parse(cfg)
+	if err != nil {
+		return nil, err
+	}
+
+	service := NewMastodonService(cfg)
+
+	return Run(ctx, service)
 }
 
 func main() {
