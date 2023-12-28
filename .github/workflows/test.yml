@@ -30,7 +30,8 @@ jobs:
 
       - run: go get .
 
-      - uses: stefanzweifel/git-auto-commit-action@v4
+      - id: auto-commit-auction
+        uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_user_name: 'fohte-bot[bot]'
           commit_user_email: '139195068+fohte-bot[bot]@users.noreply.github.com'
