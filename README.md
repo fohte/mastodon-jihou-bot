@@ -37,4 +37,6 @@ Create a Lambda function and EventBridge with the following settings:
 - Handler: `index.handler`
 - Timeout: `10 sec` (or more)
 - Memory: `128 MB` (minimum)
+- Environment Variables:
+    - `MASTODON_ACCESS_TOKEN`: Access token of the Mastodon application
 - Cron: `0 * * * ? *` (every hour)
