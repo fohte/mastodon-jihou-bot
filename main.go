@@ -3,45 +3,34 @@ package main
 import (
 	"context"
 	"fmt"
-	"os"
 	"time"
 
 	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/caarlos0/env/v10"
 	"github.com/mattn/go-mastodon"
 )
+
+type Config struct {
+	AccessToken string `env:"MASTODON_ACCESS_TOKEN"`
+}
 
 const (
 	SERVER_URL = "https://social.fohte.net"
 )
 
-func init() {
-	if os.Getenv("MASTODON_ACCESS_TOKEN") == "" {
-		panic("MASTODON_ACCESS_TOKEN is not set")
-	}
-}
-
 type Event struct{}
 
-func handleRequest(ctx context.Context, event *Event) (*string, error) {
-	if event == nil {
-		return nil, fmt.Errorf("received nil event")
-	}
-
+func Run(ctx context.Context, service MastodonService, timeProvider TimeProvider) (*string, error) {
 	location, err := time.LoadLocation("Asia/Tokyo")
 	if err != nil {
 		return nil, err
 	}
 
-	timeReport := NewTimeReport(location)
+	timeReport := NewTimeReport(timeProvider, location)
 
 	content := timeReport.CreateTimeReport()
 
-	client := mastodon.NewClient(&mastodon.Config{
-		Server:      SERVER_URL,
-		AccessToken: os.Getenv("MASTODON_ACCESS_TOKEN"),
-	})
-
-	status, err := client.PostStatus(ctx, &mastodon.Toot{
+	status, err := service.PostStatus(ctx, &mastodon.Toot{
 		Status:     content,
 		Visibility: "unlisted",
 	})
@@ -52,6 +41,22 @@ func handleRequest(ctx context.Context, event *Event) (*string, error) {
 
 	message := fmt.Sprintf("post success: %s", status.URL)
 	return &message, nil
+}
+
+func handleRequest(ctx context.Context, event *Event) (*string, error) {
+	if event == nil {
+		return nil, fmt.Errorf("received nil event")
+	}
+
+	cfg := &Config{}
+	err := env.Parse(cfg)
+	if err != nil {
+		return nil, err
+	}
+
+	service := NewMastodonService(cfg)
+
+	return Run(ctx, service, &RealTimeProvider{})
 }
 
 func main() {

@@ -7,6 +7,13 @@ on:
     types:
       - labeled
 
+permissions:
+  # push tags
+  contents: write
+
+  # add comments to the pull request
+  pull-requests: write
+
 jobs:
   release:
     runs-on: ubuntu-latest
