@@ -7,16 +7,18 @@ on:
     types:
       - labeled
 
-permissions:
-  # push tags
-  contents: write
-
-  # add comments to the pull request
-  pull-requests: write
-
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
       - uses: actions/checkout@v4
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+
       - uses: haya14busa/action-bumpr@v1
