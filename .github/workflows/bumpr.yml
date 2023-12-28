@@ -8,7 +8,10 @@ on:
       - labeled
 
 permissions:
-  contents: read
+  # push tags
+  contents: write
+
+  # add comments to the pull request
   pull-requests: write
 
 jobs:
