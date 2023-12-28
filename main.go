@@ -3,28 +3,32 @@ package main
 import (
 	"context"
 	"fmt"
-	"os"
 	"time"
 
 	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/caarlos0/env/v10"
 	"github.com/mattn/go-mastodon"
 )
+
+type config struct {
+	AccessToken string `env:"MASTODON_ACCESS_TOKEN"`
+}
 
 const (
 	SERVER_URL = "https://social.fohte.net"
 )
-
-func init() {
-	if os.Getenv("MASTODON_ACCESS_TOKEN") == "" {
-		panic("MASTODON_ACCESS_TOKEN is not set")
-	}
-}
 
 type Event struct{}
 
 func handleRequest(ctx context.Context, event *Event) (*string, error) {
 	if event == nil {
 		return nil, fmt.Errorf("received nil event")
+	}
+
+	cfg := config{}
+	err := env.Parse(cfg)
+	if err != nil {
+		return nil, err
 	}
 
 	location, err := time.LoadLocation("Asia/Tokyo")
@@ -38,7 +42,7 @@ func handleRequest(ctx context.Context, event *Event) (*string, error) {
 
 	client := mastodon.NewClient(&mastodon.Config{
 		Server:      SERVER_URL,
-		AccessToken: os.Getenv("MASTODON_ACCESS_TOKEN"),
+		AccessToken: cfg.AccessToken,
 	})
 
 	status, err := client.PostStatus(ctx, &mastodon.Toot{
