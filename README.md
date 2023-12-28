@@ -26,7 +26,7 @@ Create a Mastodon account for the bot manually. You can use any Mastodon server 
 
 ### 2. Create a Mastodon application
 
-in Go to `https://<mastodon-domain>/settings/applications/new` and create an application with your bot account. The only permission you need is `write:statuses`.
+Go to `https://<mastodon-domain>/settings/applications/new` and create an application with your bot account. The only permission you need is `write:statuses`.
 
 ### 3. Create a Lambda function and EventBridge
 
