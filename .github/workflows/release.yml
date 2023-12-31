@@ -45,7 +45,11 @@ jobs:
           zip -r dist/latest.zip bootstrap
           checksum="$(sha256sum dist/latest.zip | awk '{ print $1 }')"
           echo "$checksum" > dist/"$version".checksum
-          echo "checksum=$checksum" >> "$GITHUB_OUTPUT"
+          {
+            echo "list<<EOF"
+            find dist -type f
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
         env:
           version: ${{ steps.tag.outputs.version }}
 
@@ -55,9 +59,7 @@ jobs:
 
       - uses: softprops/action-gh-release@v1
         with:
-          files: |
-            dist/latest.zip
-            dist/${{ steps.tag.outputs.version }}.checksum
+          files: ${{ steps.build.outputs.list }}
           tag_name: ${{ steps.tag.outputs.version }}
           generate_release_notes: true
           draft: false
