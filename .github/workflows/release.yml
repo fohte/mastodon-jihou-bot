@@ -30,7 +30,7 @@ jobs:
           GOOS=linux GOARCH=arm64 go build -tags lambda.norpc -o bootstrap .
 
       - id: tag
-        run: echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+        run: echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
 
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -38,18 +38,26 @@ jobs:
           role-to-assume: ${{ secrets.AWS_IAM_ROLE }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - id: build
+        name: build
+        run: |
+          mkdir dist
+          zip -r dist/latest.zip bootstrap
+          checksum="$(sha256sum dist/latest.zip | awk '{ print $1 }')"
+          echo "$checksum" > dist/"$version".checksum
+          echo "checksum=$checksum" >> "$GITHUB_OUTPUT"
+        env:
+          version: ${{ steps.tag.outputs.version }}
+
       - name: deploy to s3
         run: |
-          zip -r main.zip bootstrap
-          aws s3api put-object \
-            --bucket fohte-lambda-sources \
-            --key "$APP_NAME"/latest.zip \
-            --body main.zip
+          aws s3 cp --recursive dist/ "s3://fohte-lambda-sources/$APP_NAME/"
 
       - uses: softprops/action-gh-release@v1
         with:
           files: |
-            ${{ env.APP_NAME }}.zip
+            dist/latest.zip
+            dist/${{ steps.tag.outputs.version }}.checksum
           tag_name: ${{ steps.tag.outputs.version }}
           generate_release_notes: true
           draft: false
