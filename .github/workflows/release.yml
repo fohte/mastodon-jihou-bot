@@ -42,8 +42,8 @@ jobs:
         name: build
         run: |
           mkdir dist
-          zip -r dist/main.zip bootstrap
-          checksum="$(sha256sum dist/main.zip | awk '{ print $1 }')"
+          zip -r dist/latest.zip bootstrap
+          checksum="$(sha256sum dist/latest.zip | awk '{ print $1 }')"
           echo "$checksum" > dist/"$version".checksum
           echo "checksum=$checksum" >> "$GITHUB_OUTPUT"
         env:
