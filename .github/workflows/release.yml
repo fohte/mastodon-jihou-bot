@@ -43,8 +43,7 @@ jobs:
         run: |
           mkdir dist
           zip -r dist/latest.zip bootstrap
-          checksum="$(sha256sum dist/latest.zip | awk '{ print $1 }')"
-          echo "$checksum" > dist/"$version".checksum
+          openssl dgst -sha256 -binary dist/latest.zip | base64 | tee dist/checksum-"$version".base64sha256
           {
             echo "list<<EOF"
             find dist -type f
