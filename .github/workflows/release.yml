@@ -49,7 +49,7 @@ jobs:
 
       - name: deploy to s3
         run: |
-          aws s3 sync dist/ "s3://fohte-lambda-sources/$APP_NAME/"
+          aws s3 cp --recursive dist/ "s3://fohte-lambda-sources/$APP_NAME/"
 
       - uses: softprops/action-gh-release@v1
         with:
