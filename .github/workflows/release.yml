@@ -62,4 +62,5 @@ jobs:
           tag_name: ${{ steps.tag.outputs.version }}
           generate_release_notes: true
           draft: false
-          prerelease: false
+          # e.g. v1.2.3-rc.1, v1.2.3-alpha.1, v1.2.3-beta.1
+          prerelease: ${{ contains(steps.tag.outputs.version, '-') }}
