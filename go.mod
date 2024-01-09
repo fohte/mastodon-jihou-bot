@@ -3,7 +3,7 @@ module github.com/fohte/mastodon-jihou-bot
 go 1.21.5
 
 require (
-	github.com/aws/aws-lambda-go v1.43.0
+	github.com/aws/aws-lambda-go v1.44.0
 	github.com/caarlos0/env/v10 v10.0.0
 	github.com/google/go-cmp v0.6.0
 	github.com/mattn/go-mastodon v0.0.6
