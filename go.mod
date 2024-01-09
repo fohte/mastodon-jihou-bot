@@ -1,6 +1,6 @@
 module github.com/fohte/mastodon-jihou-bot
 
-go 1.21.5
+go 1.21.6
 
 require (
 	github.com/aws/aws-lambda-go v1.44.0
