@@ -56,7 +56,7 @@ jobs:
         run: |
           aws s3 cp --recursive dist/ "s3://fohte-lambda-sources/$APP_NAME/"
 
-      - uses: softprops/action-gh-release@v1
+      - uses: softprops/action-gh-release@v2
         with:
           files: ${{ steps.build.outputs.list }}
           tag_name: ${{ steps.tag.outputs.version }}
