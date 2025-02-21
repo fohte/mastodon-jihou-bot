@@ -20,6 +20,7 @@ import (
 type MockTimeProvider struct {
 	ctrl     *gomock.Controller
 	recorder *MockTimeProviderMockRecorder
+	isgomock struct{}
 }
 
 // MockTimeProviderMockRecorder is the mock recorder for MockTimeProvider.
