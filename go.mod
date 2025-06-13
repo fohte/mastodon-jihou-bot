@@ -7,7 +7,7 @@ require (
 	github.com/caarlos0/env/v10 v10.0.0
 	github.com/google/go-cmp v0.6.0
 	github.com/mattn/go-mastodon v0.0.8
-	go.uber.org/mock v0.4.0
+	go.uber.org/mock v0.5.2
 )
 
 require (
