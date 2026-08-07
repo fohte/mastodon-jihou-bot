@@ -5,6 +5,7 @@ go 1.25
 require (
 	github.com/aws/aws-lambda-go v1.47.0
 	github.com/caarlos0/env/v10 v10.0.0
+	github.com/caarlos0/env/v11 v11.3.0
 	github.com/google/go-cmp v0.6.0
 	github.com/mattn/go-mastodon v0.0.13
 	go.uber.org/mock v0.4.0
