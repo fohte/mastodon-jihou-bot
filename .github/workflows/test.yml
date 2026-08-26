@@ -36,7 +36,7 @@ jobs:
       - run: go get .
 
       - id: auto-commit-auction
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@b863ae1933cb653a53c021fe36dbb774e1fb9403 # v5.2.0
         with:
           commit_user_name: 'fohte-bot[bot]'
           commit_user_email: '139195068+fohte-bot[bot]@users.noreply.github.com'
