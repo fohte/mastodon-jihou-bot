@@ -33,7 +33,7 @@ jobs:
         run: echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
 
       - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@7474bc4690e29a8392af63c5b98e7449536d5c3a # v4
         with:
           role-to-assume: ${{ secrets.AWS_IAM_ROLE }}
           aws-region: ${{ env.AWS_REGION }}
@@ -56,7 +56,7 @@ jobs:
         run: |
           aws s3 cp --recursive dist/ "s3://fohte-lambda-sources/$APP_NAME/"
 
-      - uses: softprops/action-gh-release@v2
+      - uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2
         with:
           files: ${{ steps.build.outputs.list }}
           tag_name: ${{ steps.tag.outputs.version }}

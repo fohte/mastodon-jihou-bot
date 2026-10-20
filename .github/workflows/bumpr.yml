@@ -26,6 +26,6 @@ jobs:
         with:
           token: ${{ steps.octo-sts.outputs.token }}
 
-      - uses: haya14busa/action-bumpr@v1
+      - uses: haya14busa/action-bumpr@faf6f474bcb6174125cfc569f0b2e24cbf03d496 # v1
         with:
           github_token: ${{ steps.octo-sts.outputs.token }}
